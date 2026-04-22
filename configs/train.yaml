@@ -1,0 +1,52 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# train.yaml — Single PPO training run
+# ──────────────────────────────────────────────────────────────────────────────
+# Usage:
+#   python -m trader.train --config configs/train.yaml
+#   python -m trader.train --config configs/train.yaml --seed 123
+# ──────────────────────────────────────────────────────────────────────────────
+
+seed: 12
+
+# ── Data sources ──────────────────────────────────────────────────────────────
+data:
+  ttf_model: models/ttf_regressor_v5.joblib
+
+# ── PPO agent hyperparameters ─────────────────────────────────────────────────
+agent:
+  total_timesteps: 3_000
+  pi_size: 64                  # policy network width
+  vf_size: 128                 # value network width
+  activation_fn: relu
+  ortho_init: true
+  n_steps: 1024
+  batch_size: 256
+  gamma: 0.9883
+  gae_lambda: 0.9695
+  learning_rate: 2.39e-4
+  ent_coef: 5.52e-6
+  clip_range: 0.2224
+  clip_range_vf: null
+  target_kl: null
+  n_epochs: 13
+  vf_coef: 0.6908
+  max_grad_norm: 0.6226
+  verbosity: 2                # 2 = write per-episode JSONL debug logs
+
+# ── VecNormalize (observation & reward normalization) ─────────────────────────
+normalization:
+  norm_obs: false               # normalize observations with running mean/std
+  norm_reward: true            # normalize rewards with running std
+  clip_obs: 8.0               # clip normalized observations to [-clip, clip]
+  clip_reward: 8.0            # clip normalized rewards to [-clip, clip]
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+logging:
+  tensorboard: true
+  # scratch_dir is used on Great Lakes to resolve output_dir automatically.
+  # Ignored when --output-dir is passed explicitly.
+  scratch_dir: /scratch/siads699w26_class_root/siads699w26_class/chrzhang
+
+# ── Post-training evaluation ──────────────────────────────────────────────────
+eval:
+  episodes: [100,200]   # episode indices to visualise after training

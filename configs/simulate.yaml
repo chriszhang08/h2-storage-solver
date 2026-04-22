@@ -1,0 +1,44 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# simulate.yaml — Evaluate trained PPO agents against generated H2 price scenarios
+# ──────────────────────────────────────────────────────────────────────────────
+# Usage:
+#   python -m main --type lh2
+#   python -m main --type lh2 --seed-start 100
+#   sbatch scripts/simulate.sh
+#
+# Results are written as per-task Parquet files to parquet_dir, then ingested
+# into a long-lived DuckDB by scripts/aggregate_results.py.
+# ──────────────────────────────────────────────────────────────────────────────
+
+# ── Data sources ──────────────────────────────────────────────────────────────
+data:
+  ttf_model: models/ttf_regressor_v6.joblib   # TTF forward-curve regressor
+  carbon_price: 80.0                          # $/tCO2 — EU ETS benchmark
+
+  # Map model names to .zip paths. Each model is run against every price scenario.
+  # Add more entries to compare multiple checkpoints in the same sweep.
+  ppo_models:
+    meoh: models/ppo_meoh.zip
+    lh2: models/ppo_lh2.zip
+
+  # Backward-compat single-model fallback (used if ppo_models is absent):
+  # ppo_model: models/ppo_meoh.zip
+
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+logging:
+  # 0 = silent (production default)
+  # 1 = reserved / no-op (safe for old configs)
+  # 2 = per-step JSONL debug files written to output_dir/debug/
+  verbosity: 0
+  scratch_dir: /scratch/siads699w26_class_root/siads699w26_class/chrzhang
+  # Static directory where all Slurm tasks drop their Parquet result files.
+  # aggregate_results.py reads from here and deletes ingested files.
+  parquet_dir: results/parquet_outputs
+
+
+# ── Simulation ────────────────────────────────────────────────────────────────
+simulate:
+  num_seeds: 100       # Number of price scenarios per worker (also the Slurm array stride)
+  seed_start: 0       # First seed index. Overridden by SLURM_ARRAY_TASK_ID * num_seeds.
+  t_sim_years: 1      # Simulation horizon in years (252 trading days/year)

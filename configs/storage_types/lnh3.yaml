@@ -1,0 +1,23 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Liquid Ammonia (LNH3) storage constants
+# ──────────────────────────────────────────────────────────────────────────────
+# 10,000 tonnes of H2 equivalent (in stoichiometric terms @ 17.8 wt%) is
+# ~58,000 tonnes of NH3.  In other units: 121 kg H2 / m3 NH3.
+#   https://www.sciencedirect.com/science/article/pii/S036031992402915X
+# Roughly equivalent to DOE Blue Ammonia Export Assumptions.
+# According to Abdin2021_LOHC_LargeScaleStorage, CAPEX is $0.372 M / tonne.
+# Assume Levelized Cost of Grid Electricity of $50/MWh.
+# ──────────────────────────────────────────────────────────────────────────────
+
+storage_type: lnh3
+
+constants:
+  INJECTION_COST_PER_UNIT: 0.24    # 648 kWh/tonne NH3 = ~4.8 kWh/kg H2 = $0.24/kg at $50/MWh
+  WITHDRAWAL_COST_PER_UNIT: 0      # no cracking at withdrawal — withdraw pure NH3
+  BOIL_OFF: 0.0003                 # daily boil-off rate
+  RISK_FREE_INT: 0.0607            # 0.04 base + boil-off discounting at 0.2 contribution
+  INJ_ALPHA: 1                     # injection reward weighting
+  PV_LCOE: 20.0                    # PV levelised cost of electricity ($/MWh)
+  GREEN_H2_CONTRIB: 0.2            # green H2 weight in blue-green index
+  BLUE_H2_CONTRIB: 0.8             # blue H2 weight in blue-green index
+  CCUS_COST_PER_TON: 80.0          # carbon capture cost ($/tCO2)

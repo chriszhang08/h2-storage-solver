@@ -1,0 +1,22 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Liquid Organic Hydrogen Carrier (LOHC) storage constants
+# ──────────────────────────────────────────────────────────────────────────────
+# Carrier: toluene (TOL) or dibenzyltoluene (DBT).
+# LOHCs have zero boil-off — well-documented chemical/physical property.
+# Injection is near-free (hydrogenation is exothermic); withdrawal
+# (dehydrogenation) is energy-intensive at 10-12 kWh/kg.
+# Assume Levelized Cost of Grid Electricity of $50/MWh.
+# ──────────────────────────────────────────────────────────────────────────────
+
+storage_type: lohc
+
+constants:
+  INJECTION_COST_PER_UNIT: 0.0008  # 0.016 kWh/kg hydrogenation (Abdin2021)
+  WITHDRAWAL_COST_PER_UNIT: 0.6    # 10-12 kWh/kg dehydrogenation
+  BOIL_OFF: 0                      # LOHCs have no boil-off
+  RISK_FREE_INT: 0.04              # standard discounting rate
+  INJ_ALPHA: 1                     # injection reward weighting
+  PV_LCOE: 20.0                    # PV levelised cost of electricity ($/MWh)
+  GREEN_H2_CONTRIB: 0.2            # green H2 weight in blue-green index
+  BLUE_H2_CONTRIB: 0.8             # blue H2 weight in blue-green index
+  CCUS_COST_PER_TON: 80.0          # carbon capture cost ($/tCO2)

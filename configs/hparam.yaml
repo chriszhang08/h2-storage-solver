@@ -1,0 +1,50 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# hparam.yaml — Optuna hyperparameter search
+# ──────────────────────────────────────────────────────────────────────────────
+# Usage (local, single trial):
+#   python -m trader.train --mode hparam --config configs/hparam.yaml --trial-id 0
+#
+# Usage (Great Lakes, 20 parallel trials):
+#   sbatch scripts/hparam_search.sh   # uses --array=0-19
+#
+# Search space (defined in trader/train.py::sample_hparams):
+#   clip_range         : {0.1, 0.2, 0.3}
+#   ent_coef           : {0, 0.0001, 0.001, 0.01}
+#   gae_lambda         : U(0.9, 1.0)
+#   gamma              : U(0.8, 0.9997)
+#   learning_rate      : {3e-6, 3e-5, 3e-4, 3e-3}
+#   log_std_init       : {-1, 0, 1, 2, 3}
+#   n_epochs           : {3,6,9,12,15,18,21,24,27,30}
+#   n_steps            : {512, 1024, 2048, 4096}
+#   normalize_advantage: {True, False}
+#   target_kl          : U(0.003, 0.03)
+#   vf_coef            : {0.5, 1.0}
+#   batch_size         : {64, 128, 256}
+# ──────────────────────────────────────────────────────────────────────────────
+
+seed: 12
+
+# ── Data sources ──────────────────────────────────────────────────────────────
+data:
+  ttf_model: models/ttf_regressor_v5.joblib
+
+# ── Optuna search configuration ──────────────────────────────────────────────
+search:
+  study_name: h2_ppo_hparam
+  n_trials_per_worker: 5       # each Slurm array task runs this many trials
+  total_timesteps: 200_000     # shorter horizon per trial for faster iteration
+  # SQLite storage shared across all parallel workers.
+  # On Great Lakes, point this to /scratch so the DB is on fast local storage.
+  # storage: sqlite:///optuna.db  # default; resolved relative to output_dir
+
+# ── VecNormalize (observation & reward normalization) ─────────────────────────
+normalization:
+  norm_obs: false               # normalize observations with running mean/std
+  norm_reward: true            # normalize rewards with running std
+  clip_obs: 8.0               # clip normalized observations to [-clip, clip]
+  clip_reward: 8.0            # clip normalized rewards to [-clip, clip]
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+logging:
+  tensorboard: true
+  scratch_dir: /scratch/siads699w26_class_root/siads699w26_class/chrzhang

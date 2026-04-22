@@ -1,0 +1,16 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Generic storage configuration for hydrogen storage, with fixed injection and withdrawal costs, and no boil-off losses. This serves as a baseline for comparing different storage technologies.
+# ─────────────────────────────────────────────────────────────────────────────
+
+storage_type: baseline
+
+constants:
+  INJECTION_COST_PER_UNIT: 0   # test no injection cost for baseline
+  WITHDRAWAL_COST_PER_UNIT: 0  # test no withdrawal cost for baseline
+  BOIL_OFF: 0                  # no boil off in baseline
+  RISK_FREE_INT: 0.4           # standard risk-free interest rate for discounting
+  INJ_ALPHA: 1                     # injection reward weighting
+  PV_LCOE: 20.0                    # PV levelised cost of electricity ($/MWh)
+  GREEN_H2_CONTRIB: 0.2            # green H2 weight in blue-green index
+  BLUE_H2_CONTRIB: 0.8             # blue H2 weight in blue-green index
+  CCUS_COST_PER_TON: 80.0          # carbon capture cost ($/tCO2)

@@ -1,0 +1,22 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Liquid Hydrogen (LH2) storage constants
+# ──────────────────────────────────────────────────────────────────────────────
+# capex = $2520 / kg-day
+# liquid hydrogen has a density of 70.8 kg / m3
+#   https://www.sciencedirect.com/science/article/pii/S0360319923004354
+# so 10,000 tonnes = 140,000 m3 of LH2
+# assume Levelized Cost of Grid Electricity of $50/MWh
+# ──────────────────────────────────────────────────────────────────────────────
+
+storage_type: lh2
+
+constants:
+  INJECTION_COST_PER_UNIT: 0.625   # 10-15 kWh/kg liquefaction (Abdin2021_LOHC_LargeScaleStorage)
+  WITHDRAWAL_COST_PER_UNIT: 0.025  # 0.5 kWh/kg regasification
+  BOIL_OFF: 0.001                  # daily boil-off rate (Kawasaki 2023)
+  RISK_FREE_INT: 0.101             # higher end to factor in boil-off in storage valuation
+  INJ_ALPHA: 1                     # injection reward weighting
+  PV_LCOE: 20.0                    # PV levelised cost of electricity ($/MWh)
+  GREEN_H2_CONTRIB: 0.2            # green H2 weight in blue-green index
+  BLUE_H2_CONTRIB: 0.8             # blue H2 weight in blue-green index
+  CCUS_COST_PER_TON: 80.0          # carbon capture cost ($/tCO2)

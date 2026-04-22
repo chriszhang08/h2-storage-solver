@@ -1,0 +1,22 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Methanol (MeOH) storage constants
+# ──────────────────────────────────────────────────────────────────────────────
+# Methanol does not boil off under atmospheric storage conditions.
+#   https://methanol.org/wp-content/uploads/2020/04/Atmospheric-Above-Ground-Tank-Storage-Of-Methanol-Bulletin.pdf
+# Injection cost includes 3 kWh/kg H2 + 7 kg CO2/kg H2 at CCUS cost.
+#   https://www.sciencedirect.com/science/article/pii/S0959652613003892
+# Assume Levelized Cost of Grid Electricity of $50/MWh.
+# ──────────────────────────────────────────────────────────────────────────────
+
+storage_type: meoh
+
+constants:
+  INJECTION_COST_PER_UNIT: 0.71    # 3 kWh/kg H2 + 7 kg CO2/kg H2 at CCUS cost
+  WITHDRAWAL_COST_PER_UNIT: 0      # no cracking at withdrawal — withdraw pure methanol
+  BOIL_OFF: 0                      # methanol does not boil off
+  RISK_FREE_INT: 0.04              # SOFR monthly risk-free rate
+  INJ_ALPHA: 1                     # injection reward weighting
+  PV_LCOE: 20.0                    # PV levelised cost of electricity ($/MWh)
+  GREEN_H2_CONTRIB: 0.2            # green H2 weight in blue-green index
+  BLUE_H2_CONTRIB: 0.8             # blue H2 weight in blue-green index
+  CCUS_COST_PER_TON: 80.0          # carbon capture cost ($/tCO2)
